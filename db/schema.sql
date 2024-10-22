@@ -23,3 +23,4 @@ CREATE TABLE employee (
   role_id INTEGER REFERENCES role(id),
   manager_id INTEGER REFERENCES employee(id)
 );
+

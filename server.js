@@ -1,5 +1,5 @@
 const inquirer = require('inquirer');
-const { viewDepartments, viewRoles, viewEmployees } = require('./lib/queries');
+const { viewDepartments, viewRoles, viewEmployees, addDepartment } = require('./lib/queries');
 
 const menu = () => {
   inquirer.prompt({
@@ -27,7 +27,16 @@ const menu = () => {
       case 'View all employees':
         viewEmployees().then(menu);
         break;
-      // Add cases for adding departments, roles, employees, updating roles
+      case 'Add a department':
+        inquirer.prompt({
+          type: 'input',
+          name: 'departmentName',
+          message: 'Enter the name of the department:'
+        }).then(answer => {
+          addDepartment(answer.departmentName).then(menu);
+        });
+        break;
+      // Add cases for adding roles, employees, updating roles
       case 'Exit':
         process.exit();
     }
