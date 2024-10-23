@@ -1,5 +1,5 @@
 const inquirer = require('inquirer');
-const { viewDepartments, viewRoles, viewEmployees, addDepartment } = require('./lib/queries');
+const { viewDepartments, viewRoles, viewEmployees, addDepartment, addRole, addEmployee } = require('./lib/queries');
 
 const menu = () => {
   inquirer.prompt({
@@ -36,7 +36,55 @@ const menu = () => {
           addDepartment(answer.departmentName).then(menu);
         });
         break;
-      // Add cases for adding roles, employees, updating roles
+      case 'Add a role':
+        inquirer.prompt([
+          {
+            type: 'input',
+            name: 'title',
+            message: 'Enter the name of the role:'
+          },
+          {
+            type: 'input',
+            name: 'salary',
+            message: 'Enter the salary for the role:'
+          },
+          {
+            type: 'input',
+            name: 'departmentId',
+            message: 'Enter the department ID for this role:'
+          }
+        ]).then(answers => {
+          addRole(answers.title, answers.salary, answers.departmentId).then(menu);
+        });
+        break;
+      case 'Add an employee':
+        inquirer.prompt([
+          {
+            type: 'input',
+            name: 'firstName',
+            message: 'Enter the first name of the employee:'
+          },
+          {
+            type: 'input',
+            name: 'lastName',
+            message: 'Enter the last name of the employee:'
+          },
+          {
+            type: 'input',
+            name: 'roleId',
+            message: 'Enter the role ID for the employee:'
+          },
+          {
+            type: 'input',
+            name: 'managerId',
+            message: 'Enter the manager ID for the employee (or leave blank if none):',
+            default: null
+          }
+        ]).then(answers => {
+          const managerId = answers.managerId || null;  // Handle case if no manager is provided
+          addEmployee(answers.firstName, answers.lastName, answers.roleId, managerId).then(menu);
+        });
+        break;
       case 'Exit':
         process.exit();
     }
